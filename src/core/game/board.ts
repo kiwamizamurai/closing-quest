@@ -1,11 +1,30 @@
 import type { Book } from '../accounting/book';
-import type { Card, CardContext, CardDef, SquareType } from '../tasks/types';
+import type { Card, CardContext, CardDef, FactTable, SquareType } from '../tasks/types';
 import { periodOf } from '../types';
-import type { Square } from './types';
+import type { GameState, Scenario, Square } from './types';
 
 /** カード定義を実体にする。動的カードはその時点の帳簿から作る。 */
 export const resolveCard = (def: CardDef, ctx: CardContext): Card =>
   typeof def === 'function' ? def(ctx) : def;
+
+export const monthChecklist = (scenario: Scenario, state: GameState, card: Card): FactTable | null => {
+  if (!card.monthClose) return null;
+  const period = periodOf(card.date);
+  const done = new Set(state.records.map((r) => r.cardId));
+  const rows = scenario.board.flatMap((sq) => {
+    if (sq.period !== period || sq.cardId === undefined || sq.cardId === card.id) return [];
+    const def = scenario.cardDefById[sq.cardId];
+    const result = done.has(sq.cardId) ? '済' : '見送り';
+    if (!def || typeof def === 'function') return [[sq.label, '', result]];
+    return [[def.title, def.summary ?? (def.keywords ?? []).join('・'), result]];
+  });
+  if (!rows.some((r) => r[1] !== '')) return null;
+  return {
+    caption: '今月の業務（済：取り組んだ／見送り：止まらなかった）',
+    headers: ['業務', 'ざっくり内容', '結果'],
+    rows,
+  };
+};
 
 export const squareTypeOf = (card: Card): SquareType => {
   if (card.squareType) return card.squareType;

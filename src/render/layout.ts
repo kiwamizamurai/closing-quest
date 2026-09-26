@@ -114,6 +114,8 @@ export const tileSpec = (type: SquareType): TileSpec => {
     case 'start':
     case 'goal':
       return { w: 4.6, d: 4.6, slot: 5.4 };
+    case 'routine':
+      return { w: 2.4, d: 3.0, slot: 2.7 };
     default:
       return { w: 3.2, d: 3.4, slot: 3.7 };
   }

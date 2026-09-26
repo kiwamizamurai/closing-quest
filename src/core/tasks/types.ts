@@ -35,7 +35,7 @@ export const CARD_KIND_LABEL: Record<CardKind, string> = {
  *  start 期首／normal 通常業務／deadline 期限マス（必須停止）／event 突発イベント／
  *  monthend 月末（月次決算・必須停止）／special 特別（半期・年末調整など）／goal ゴール（決算ステージの最後）
  */
-export type SquareType = 'start' | 'normal' | 'deadline' | 'event' | 'monthend' | 'special' | 'goal';
+export type SquareType = 'start' | 'normal' | 'routine' | 'deadline' | 'event' | 'monthend' | 'special' | 'goal';
 
 /** 出典。verified=primary は国税庁・厚労省など一次情報で確認済み、secondary は民間解説のみ。 */
 export interface SourceRef {
@@ -78,6 +78,7 @@ export interface MultiQuestion extends QuestionBase {
   readonly options: readonly string[];
   /** 正解の選択肢番号の集合（順不同）。 */
   readonly answer: readonly number[];
+  readonly table?: FactTable;
 }
 
 /** 数値入力。CALC で使う。 */
@@ -141,6 +142,8 @@ export interface Card {
   readonly mandatory: boolean;
   /** 盤面のマスに表示する短いラベル。 */
   readonly squareLabel: string;
+  readonly keywords?: readonly string[];
+  readonly summary?: string;
   /** マスの種別を明示する（省略時は kind・mandatory・monthClose から決める）。start / special / goal の指定に使う。 */
   readonly squareType?: SquareType;
 }

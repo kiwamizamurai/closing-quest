@@ -163,6 +163,66 @@
   color: var(--ink);
 }
 
+.cq-head__kw {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.cq-kw {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--cq-kc) 14%, var(--paper));
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.cq-kw::before {
+  content: '#';
+  margin-right: 2px;
+  color: var(--cq-kc);
+}
+.cq-pick__row {
+  cursor: pointer;
+}
+.cq-table.cq-pick th,
+.cq-table.cq-pick td {
+  padding: 7px 8px;
+}
+.cq-table.cq-pick th:first-child,
+.cq-table.cq-pick td:first-child {
+  min-width: 0;
+}
+.cq-table.cq-pick tbody tr:hover td {
+  background: color-mix(in srgb, var(--cq-kc) 8%, var(--paper));
+}
+.cq-table.cq-pick tbody tr.is-picked td {
+  background: color-mix(in srgb, var(--cq-kc) 20%, var(--paper));
+  font-weight: 700;
+}
+.cq-pick__cell {
+  width: 1%;
+  white-space: nowrap;
+}
+.cq-pick__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.cq-pick__input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--cq-kc);
+}
+.cq-pick__no {
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- 項目名（◆ 見出し ─────） ---------- */
 .cq-sec {
   margin-top: 22px;

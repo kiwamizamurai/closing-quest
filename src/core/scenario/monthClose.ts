@@ -235,6 +235,8 @@ export const monthCloseCard = (period: number): CardDef => {
       mandatory: true,
       squareLabel: `${m}月締め`,
       squareType: 'monthend',
+      keywords: ['月次決算', '残高照合', '予実報告'],
+      summary: '通帳と帳簿を照合し、月次の決算整理をして、予算との差を報告する。',
     };
   };
 };

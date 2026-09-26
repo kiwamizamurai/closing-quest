@@ -35,8 +35,9 @@ const LABELS = [
 ];
 const KINDS: CardKind[] = ['JOURNAL', 'CALC', 'AUDIT', 'DECISION', 'REPORT', 'JOURNAL', 'CALC'];
 
-const RING_COUNTS = [5, 5, 6, 5, 5, 6, 6, 5, 6, 5, 5, 6]; // 65 マス
-const ROAD_COUNTS = [5, 5, 5]; // 15 マス（決算ステージ）
+const PER_MONTH = Number(new URLSearchParams(location.search).get('n')) || 0;
+const RING_COUNTS = PER_MONTH ? Array.from({ length: 12 }, () => PER_MONTH) : [5, 5, 6, 5, 5, 6, 6, 5, 6, 5, 5, 6];
+const ROAD_COUNTS = [5, 5, 5];
 
 const makeFixture = (): Square[] => {
   const out: Square[] = [];
@@ -52,6 +53,7 @@ const makeFixture = (): Square[] => {
       else if (k === 2) type = 'deadline';
       else if (k === 3 && n >= 5) type = 'event';
       else if (k === 1 && (period === 5 || period === 11 || period === 13)) type = 'special';
+      else if (PER_MONTH && k % 3 !== 2) type = 'routine';
       const label =
         type === 'start'
           ? '期首'

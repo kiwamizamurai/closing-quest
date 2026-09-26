@@ -2,7 +2,7 @@ import { cashOnHand, createBook, cr, dr, entry, postEntry, type Book, type Journ
 import { canonicalJournal, hintCount, judge } from '../tasks/judge';
 import type { Card, SkillId } from '../tasks/types';
 import { periodOf } from '../types';
-import { computeMove, resolveCard } from './board';
+import { computeMove, monthChecklist, resolveCard } from './board';
 import { planSpin } from './roulette';
 import { seedToState } from './rng';
 import { computeFinalScore } from './score';
@@ -112,7 +112,9 @@ const landOn = (state: GameState, scenario: Scenario, index: number, events: Gam
 
   const def = square.cardId ? scenario.cardDefById[square.cardId] : undefined;
   if (!def) return { ...next, phase: 'idle' };
-  const card = resolveCard(def, { book: next.book, date: square.date });
+  const resolved = resolveCard(def, { book: next.book, date: square.date });
+  const checklist = monthChecklist(scenario, next, resolved);
+  const card = checklist ? { ...resolved, facts: [...(resolved.facts ?? []), checklist] } : resolved;
   next = { ...next, phase: 'question', active: startCard(next, card) };
   events.push({ type: 'cardStarted', cardId: card.id });
   return next;

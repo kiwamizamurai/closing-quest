@@ -4,6 +4,7 @@ import type { JournalLine } from '@/core/accounting/journal';
 import type {
   Answer,
   ChoiceQuestion,
+  FactTable,
   JournalQuestion,
   MultiQuestion,
   NumberQuestion,
@@ -155,6 +156,95 @@ const createMulti = (q: MultiQuestion, ctx: WidgetContext): Widget => {
       input.checked = !input.checked;
       input.focus({ preventScroll: true });
       input.closest('label')?.scrollIntoView({ block: 'nearest' });
+      ctx.onChange();
+      return true;
+    },
+  };
+};
+
+const createMultiTable = (q: MultiQuestion, table: FactTable, ctx: WidgetContext): Widget => {
+  const before = new Set(ctx.prefill?.type === 'multi' ? ctx.prefill.indices : []);
+  const inputs: HTMLInputElement[] = [];
+  const numeric = new Set(table.numericColumns ?? []);
+  const cell = (v: string | number, col: number): string =>
+    typeof v === 'number' && numeric.has(col) ? groupDigits(v) : String(v);
+  const rows = table.rows.map((row, i) => {
+    const input = el('input', {
+      class: 'cq-pick__input',
+      attrs: {
+        type: 'checkbox',
+        value: i,
+        'aria-label': q.options[i] ?? `${i + 1}行目`,
+        'aria-keyshortcuts': i < 9 ? String(i + 1) : undefined,
+      },
+    });
+    input.checked = before.has(i);
+    inputs.push(input);
+    const tr = el(
+      'tr',
+      { class: input.checked ? 'cq-pick__row is-picked' : 'cq-pick__row' },
+      el(
+        'td',
+        { class: 'cq-pick__cell' },
+        el('label', { class: 'cq-pick__label' }, input, el('span', { class: 'cq-pick__no', text: i < 9 ? String(i + 1) : '' })),
+      ),
+      ...row.map((v, c) => el('td', { class: numeric.has(c) ? 'num' : '', text: cell(v, c) })),
+    );
+    const sync = (): void => {
+      tr.classList.toggle('is-picked', input.checked);
+    };
+    input.addEventListener('change', () => {
+      sync();
+      ctx.onChange();
+    });
+    tr.addEventListener('click', (ev) => {
+      if (ev.target instanceof Element && ev.target.closest('label')) return;
+      input.checked = !input.checked;
+      sync();
+      ctx.onChange();
+    });
+    return tr;
+  });
+
+  return {
+    el: el(
+      'div',
+      { class: 'cq-multi cq-multi--table', attrs: { role: 'group', 'aria-labelledby': ctx.labelledBy } },
+      el('p', { class: 'cq-hintline', text: '当てはまる行をすべて選んでください（行をクリックで選択・解除）。' }),
+      el(
+        'div',
+        { class: 'cq-table-wrap', dataset: { label: table.caption ?? '選択する表' } },
+        el(
+          'table',
+          { class: 'cq-table cq-pick' },
+          el(
+            'thead',
+            {},
+            el(
+              'tr',
+              {},
+              el('th', { text: '選', attrs: { scope: 'col' } }),
+              ...table.headers.map((h, c) => el('th', { class: numeric.has(c) ? 'num' : '', text: h, attrs: { scope: 'col' } })),
+            ),
+          ),
+          el('tbody', {}, ...rows),
+        ),
+      ),
+    ),
+    firstControl: () => inputs[0] ?? null,
+    read: () => {
+      const indices = inputs.flatMap((x, i) => (x.checked ? [i] : []));
+      if (indices.length === 0) {
+        return { ok: false, message: '当てはまる行を1つ以上選んでください。', focus: inputs[0] ?? null };
+      }
+      return { ok: true, answer: { type: 'multi', indices } };
+    },
+    pressDigit: (n) => {
+      const input = inputs[n - 1];
+      if (!input) return false;
+      input.checked = !input.checked;
+      input.closest('tr')?.classList.toggle('is-picked', input.checked);
+      input.focus({ preventScroll: true });
       ctx.onChange();
       return true;
     },
@@ -478,7 +568,7 @@ export const createWidget = (q: Question, ctx: WidgetContext): Widget => {
     case 'choice':
       return createChoice(q, ctx);
     case 'multi':
-      return createMulti(q, ctx);
+      return q.table ? createMultiTable(q, q.table, ctx) : createMulti(q, ctx);
     case 'number':
       return createNumber(q, ctx);
     case 'journal':

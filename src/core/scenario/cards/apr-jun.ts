@@ -164,6 +164,8 @@ const start: Card = {
   sources: [SRC_INVOICE_ABC, SRC_MF],
   mandatory: true,
   squareLabel: '着任',
+  keywords: ['年間の流れ', '月次決算', '予算実績'],
+  summary: '経理の 3 層（日次・月次・年次）と、月次決算・予算実績管理の意義を知る。',
   squareType: 'start',
 };
 
@@ -244,6 +246,8 @@ const invoiceCheck: Card = (() => {
     sources: [SRC_NTA_6625, SRC_NTA_INVOICE, SRC_NTA_TOROKU],
     mandatory: false,
     squareLabel: '請求書点検',
+    keywords: ['請求書の点検', '登録番号', '二重請求'],
+    summary: '届いた請求書を、記載事項と社内の記録の両方で確かめてから支払う。',
   };
 })();
 
@@ -320,6 +324,8 @@ const expenseReceipts: Card = (() => {
     sources: [SRC_NTA_QA94_2, SRC_NTA_QA58],
     mandatory: false,
     squareLabel: '経費精算',
+    keywords: ['経費精算', '領収書', '私用の混入'],
+    summary: '領収書の内容・宛名・私用の混入を確認して、経費として認めるかを決める。',
   };
 })();
 
@@ -394,6 +400,8 @@ const deptDelay: Card = {
   sources: [SRC_INVOICE_ABC],
   mandatory: false,
   squareLabel: '経費の遅れ',
+  keywords: ['経費の提出遅れ', '締め日', '部署との調整'],
+  summary: '提出が遅れる部署に、締め日を守ってもらう働きかけ方を決める。',
 };
 
 /** 4/28 固定資産税（償却資産）第1期。仕訳を帳簿に入れる（必須）。 */
@@ -493,6 +501,8 @@ const fixedAssetTax1: Card = (() => {
     sources: [SRC_MIC_KOTEI, SRC_MIC_NOUKI, SRC_TOKYO_SHOKYAKU],
     mandatory: true,
     squareLabel: '固定資産税',
+    keywords: ['固定資産税', '納期', '償却資産'],
+    summary: '償却資産にかかる固定資産税の第 1 期を、期限までに納める。',
   };
 })();
 
@@ -586,6 +596,8 @@ const arMatching: Card = (() => {
     sources: [SRC_INVOICE_ABC],
     mandatory: false,
     squareLabel: '入金消込',
+    keywords: ['入金消込', '振込手数料', '名義の違い'],
+    summary: '入金を請求書と突き合わせて売掛金を消し込み、名義や手数料の差を処理する。',
   };
 })();
 
@@ -664,6 +676,8 @@ const missingInvoice: Card = (() => {
     sources: [SRC_MF, SRC_INVOICE_ABC],
     mandatory: false,
     squareLabel: '請求書未着',
+    keywords: ['請求書の未着', '見越計上', '取引先への確認'],
+    summary: '請求書が届かない取引を、見積りで費用に計上して、取引先に確認する。',
   };
 })();
 
@@ -748,6 +762,8 @@ const vehicleTax: Card = {
   sources: [SRC_TOKYO_JIDOSHA],
   mandatory: true,
   squareLabel: '自動車税',
+  keywords: ['自動車税', '納期限', '納付'],
+  summary: '自動車税（種別割）を、納期限までに納める。',
 };
 
 // ===========================================================================

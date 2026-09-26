@@ -37,6 +37,7 @@ export interface TileTheme {
 
 export const TILE_THEME: Record<SquareType, TileTheme> = {
   normal: { paper: '#fffdf6', frame: '#e3dccb', frameW: 0.045, double: false, tag: null, label: 0.5 },
+  routine: { paper: '#fbf9ff', frame: '#c4b5fd', frameW: 0.05, double: false, tag: null, label: 0.42 },
   deadline: { paper: '#ffecea', frame: '#ff5a5f', frameW: 0.085, double: false, tag: 'DEADLINE', label: 0.5 },
   monthend: { paper: '#fff6cc', frame: '#ffbe1f', frameW: 0.09, double: true, tag: 'MONTH END', label: 0.56 },
   event: { paper: '#e4f3ff', frame: '#3d9bff', frameW: 0.07, double: false, tag: 'EVENT', label: 0.5 },
@@ -48,6 +49,7 @@ export const TILE_THEME: Record<SquareType, TileTheme> = {
 /** 3D の台紙（縁取り）の色。normal は白い縁でぷっくり見せる。 */
 export const TILE_PLATE_COLOR: Record<SquareType, string> = {
   normal: '#ffffff',
+  routine: '#ece6ff',
   deadline: '#ff5a5f',
   monthend: '#ffbe1f',
   event: '#3d9bff',

@@ -5,6 +5,8 @@ import type { CardDef } from '../tasks/types';
 import { buildAutoEntries } from './baseline';
 import { cards as aprJun } from './cards/apr-jun';
 import { cards as janMar } from './cards/jan-mar';
+import { cards as m04 } from './cards/m04';
+import { cards as m05 } from './cards/m05';
 import { cards as julSep } from './cards/jul-sep';
 import { cards as octDec } from './cards/oct-dec';
 import { COMPANY, MONTH_END_INVENTORY, MONTHLY_SALES_BUDGET, OPENING_BALANCES } from './company';
@@ -15,7 +17,7 @@ export { COMPANY } from './company';
 
 /** 1 年分のシナリオを組み立てる。カードは日付順に盤面のマスになる。 */
 export const createScenario = (): Scenario => {
-  const defs: CardDef[] = [...aprJun, ...julSep, ...octDec, ...janMar, ...allMonthCloseCards(), ...stageCards()];
+  const defs: CardDef[] = [...aprJun, ...m04, ...m05, ...julSep, ...octDec, ...janMar, ...allMonthCloseCards(), ...stageCards()];
   const previewBook = createBook(OPENING_BALANCES);
   const board = buildBoard(defs, previewBook);
 

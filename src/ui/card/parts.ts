@@ -32,6 +32,9 @@ export const cardHeader = (card: Card): HTMLElement =>
       el('span', { class: 'cq-chip', text: `スキル：${SKILL_LABEL[card.skill]}` }),
     ),
     el('h2', { class: 'cq-head__title', text: card.title }),
+    card.keywords && card.keywords.length > 0
+      ? el('div', { class: 'cq-head__kw' }, ...card.keywords.map((k) => el('span', { class: 'cq-kw', text: k })))
+      : null,
   );
 
 export const situationBlock = (card: Card): HTMLElement =>
