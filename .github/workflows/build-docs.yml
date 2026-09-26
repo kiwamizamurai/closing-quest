@@ -1,4 +1,4 @@
-# main への push で、型検査 → シナリオの整合性チェック → docs/ へビルド → docs/ をコミットして push する。
+# main への push で、型検査 → docs/ へビルド → docs/ をコミットして push する。
 # GitHub Pages は Settings → Pages → Source を「Deploy from a branch」、Branch を「main」/ Folder を「/docs」にすると、
 # この docs/ をそのまま配信する（Pages を有効にするのは後でよい。ビルドだけ先に回しておける）。
 name: build-docs
@@ -36,9 +36,6 @@ jobs:
 
       - name: 型検査
         run: npm run typecheck
-
-      - name: シナリオの整合性チェック（全問正解で 1 年を通す）
-        run: npm run validate
 
       - name: docs/ にビルド
         run: npm run build:docs

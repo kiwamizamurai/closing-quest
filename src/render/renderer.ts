@@ -46,8 +46,7 @@ export interface BoardRenderer {
 const deg = (d: number): number => (d * Math.PI) / 180;
 const MOVE_BUDGET_S = 1.9;
 const BG = '#ffe9dd';
-// desk_wood は素材がまだ無いので要求しない（置いたらここに足す。無い間は手続き生成の机になる）
-const ART_NAMES: readonly ArtName[] = ['board_ground', 'month_icons', 'kind_icons'];
+const ART_NAMES: readonly ArtName[] = ['desk_wood', 'board_ground', 'month_icons', 'kind_icons'];
 
 interface MoveState {
   readonly indices: number[];

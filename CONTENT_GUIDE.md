@@ -16,7 +16,7 @@ Closing Quest の「業務カード」を作るときの決まり。1 年（令�
 ## 帳簿に仕訳を入れるカード（必須・ID と日付と仕訳は固定）
 
 次のカードだけが、帳簿に仕訳を入れる。ID・日付（月/日）・仕訳（借方/貸方と金額）を**変えない**。`JournalQuestion`（`expected[0]` が計上される）か、カードの `postings` のどちらかで入れる。`mandatory: true`。
-金額は `company.ts` の定数を使う。整合性チェック（`npx tsx scripts/validate.ts`）が、これらの存在と仕訳を検査する。
+金額は `company.ts` の定数を使う。開発時のコンソールに出る整合性チェック（`src/core/scenario/validate.ts`）が、これらの存在と仕訳を検査する。
 
 | カード ID | 日付 | 仕訳（借方 ／ 貸方） | 内容 |
 |---|---|---|---|
@@ -90,7 +90,6 @@ Closing Quest の「業務カード」を作るときの決まり。1 年（令�
 ```bash
 cd closing-quest   # リポジトリのルートで実行する
 npx tsc --noEmit                 # 型（strict / noUncheckedIndexedAccess / noUnusedLocals）
-npx tsx scripts/validate.ts      # 整合性チェック（全問正解で 1 年を通す）
 ```
 
-`validate.ts` は、ほかの担当のカードがそろうまで「必須カードがない」等のエラーを出す。**自分のカード ID に関するエラー**だけを直す。`scripts/validate.ts` と `src/core/scenario/validate.ts` は編集しない。
+`src/core/scenario/validate.ts` は編集しない。

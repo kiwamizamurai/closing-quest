@@ -8,10 +8,9 @@ Closing Quest：1年間（令和8年度）の経理業務を体験して学ぶ�
 npm run dev          # 開発サーバー http://localhost:3100
 npm run build        # 型検査 + 本番ビルド
 npm run typecheck    # tsc（アプリ用と core 用の 2 つ）
-npx tsx scripts/validate.ts   # シナリオの整合性チェック（全問正解の自動プレイで 1 年を通す）
 ```
 
-テストは書かない方針（ユーザーの指示）。代わりに `validate.ts` と型検査、実際にブラウザで遊んで確認する。
+テストは書かない方針（ユーザーの指示）。代わりに型検査と、実際にブラウザで遊んで確認する。
 
 ```bash
 python3 scripts/build-art-atlas.py   # art-src/ の元画像から、月・種別のアイコンのアトラスを作る（Pillow）
@@ -47,5 +46,5 @@ src/app/       結線（store・render・ui）、セーブ
 
 ## アセットとライセンス
 
-- 外部素材は CC0 のもの（Poly Haven / ambientCG / Kenney / Quaternius）だけ。取得元とライセンスは `CREDITS.md` に記録する。
+- 外部素材は CC0 のもの（Poly Haven / ambientCG / Kenney / Quaternius）だけ。
 - 「人生ゲーム」は商標の可能性が高いので、名称・盤面・駒（ペグ付きの車など）の意匠を使わない。

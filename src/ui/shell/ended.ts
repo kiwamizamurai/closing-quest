@@ -2,6 +2,7 @@ import type { FinalScore } from '@/core/game/types';
 import { formatYen } from '@/core/types';
 import { announce, clear, el } from '@/ui/dom';
 import { suppressKeyRepeat } from './keys';
+import { createMascot } from './mascot';
 import type { ShellOptions } from './options';
 import { focusSoon, type View } from './view';
 
@@ -97,6 +98,7 @@ export const createEnded = (opts: ShellOptions): View => {
         factRow('ペナルティ合計', formatYen(fs.penaltyTotal), penTone),
       ),
       el('div', { class: 'cq-ended__actions' }, again),
+      createMascot('cq-mascot cq-mascot--ended'),
     );
   };
 

@@ -3,7 +3,7 @@ import { SRGBColorSpace, TextureLoader, type Texture } from 'three';
 /**
  * 外部のイラスト素材（あれば使い、無ければ手続き生成のままにする）。
  * 置き場所: public/assets/art/
- *  - desk_wood.png    机の天板（タイルできる木目。1 枚が約 96 単位）
+ *  - desk_wood.jpeg   机の天板（タイルできる木目。1 枚が約 96 単位）
  *  - board_ground.jpeg 盤面の下地。正方形。中央の円形は無地（ルーレットの下）
  *  - month_icons.png  月のアイコン。4 列 x 3 行、左上から 4月 → 翌3月の順
  *  - kind_icons.png   カード種別のアイコン。3 列 x 2 行、JOURNAL, DEADLINE, CALC, AUDIT, DECISION, REPORT の順
@@ -11,7 +11,7 @@ import { SRGBColorSpace, TextureLoader, type Texture } from 'three';
 export type ArtName = 'desk_wood' | 'board_ground' | 'month_icons' | 'kind_icons';
 
 export const ART_FILES: Record<ArtName, string> = {
-  desk_wood: 'desk_wood.png',
+  desk_wood: 'desk_wood.jpeg',
   board_ground: 'board_ground.jpeg',
   month_icons: 'month_icons.png',
   kind_icons: 'kind_icons.png',

@@ -246,12 +246,37 @@
   color: var(--night-ink-2);
   font-size: var(--fs-sm);
 }
-.cq-title__credit {
-  margin: 18px 0 0;
-  font-size: var(--fs-sm);
-  line-height: 1.6;
-  text-align: center;
-  color: var(--night-ink-2);
+.cq-mascot {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 10px 14px color-mix(in srgb, var(--night) 45%, transparent));
+  animation: cq-bob 3.4s ease-in-out infinite;
+}
+.cq-mascot--title {
+  right: -104px;
+  bottom: -44px;
+  width: 210px;
+}
+.cq-mascot--ended {
+  left: -110px;
+  bottom: -34px;
+  width: 190px;
+}
+@keyframes cq-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+@media (max-width: 1180px) {
+  .cq-mascot {
+    display: none;
+  }
 }
 .cq-title__keys-head {
   margin: 30px 0 8px;

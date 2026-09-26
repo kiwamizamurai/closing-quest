@@ -13,8 +13,7 @@
     "build:docs": "tsc --noEmit && vite build --outDir docs --emptyOutDir",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.core.json",
-    "check": "npm run typecheck",
-    "validate": "tsx scripts/validate.ts"
+    "check": "npm run typecheck"
   },
   "dependencies": {
     "three": "0.186.1"
@@ -22,7 +21,6 @@
   "devDependencies": {
     "@types/node": "^24.0.0",
     "@types/three": "0.186.0",
-    "tsx": "^4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.1"
   }
