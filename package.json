@@ -2,6 +2,7 @@
   "name": "closing-quest",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "description": "1年間の経理業務を体験して学ぶ 3D すごろく（月次決算がサブゴール）",
   "engines": {

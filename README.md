@@ -1,5 +1,12 @@
 # Closing Quest — 経理の1年間
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![build-docs](https://github.com/kiwamizamurai/closing-quest/actions/workflows/build-docs.yml/badge.svg)](https://github.com/kiwamizamurai/closing-quest/actions/workflows/build-docs.yml)
+[![Play](https://img.shields.io/badge/Play-GitHub%20Pages-ff5f9e)](https://kiwamizamurai.github.io/closing-quest/)
+![TypeScript](https://img.shields.io/badge/TypeScript-7-3178c6?logo=typescript&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-0.186-black?logo=threedotjs&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
+
 **ルーレットで進む 3D すごろくで、1年間の経理業務をまるごと体験するゲーム。**
 月次決算を毎月のサブゴールに、決算・申告・納付を最終ゴールにしています。
 
