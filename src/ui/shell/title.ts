@@ -51,6 +51,7 @@ export const createTitle = (opts: ShellOptions): View => {
     noSave,
     el('h2', { class: 'cq-title__keys-head', text: '操作' }),
     keys,
+    el('p', { class: 'cq-title__credit', text: '盤面の絵柄と、月・種別のアイコンには、AI（Gemini）で生成したイラストを含みます。' }),
   );
 
   const root = el(
