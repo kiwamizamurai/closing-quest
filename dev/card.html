@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>カードパネル ハーネス（開発用）</title>
+    <style>
+      /* 盤面の代わりの暗い背景と、HUD の高さ（--hud-h）だけ空けた帯。色は tokens.css の変数を使う。 */
+      #app {
+        background:
+          radial-gradient(circle at 25% 40%, var(--night-2), var(--night) 70%);
+      }
+      #hud {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: var(--hud-h);
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        background: var(--night-2);
+        color: var(--night-ink-2);
+        font-size: var(--fs-sm);
+      }
+      #harness {
+        position: absolute;
+        top: calc(var(--hud-h) + 16px);
+        left: 16px;
+        width: 300px;
+        max-height: calc(100% - var(--hud-h) - 32px);
+        overflow: auto;
+        padding: 14px;
+        border-radius: var(--radius);
+        background: var(--night-2);
+        color: var(--night-ink);
+        pointer-events: auto;
+        font-size: var(--fs-sm);
+      }
+      #harness h1 {
+        margin: 0 0 10px;
+        font-size: var(--fs-base);
+      }
+      #harness button {
+        display: block;
+        width: 100%;
+        min-height: 40px;
+        margin-bottom: 6px;
+        padding: 0 10px;
+        border: 1px solid var(--night-ink-2);
+        border-radius: var(--radius-sm);
+        background: var(--night);
+        color: var(--night-ink);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      #harness pre {
+        margin: 10px 0 0;
+        padding: 8px;
+        border-radius: var(--radius-sm);
+        background: var(--night);
+        color: var(--night-ink-2);
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="hud">HUD（--hud-h の空き）／ カードパネルの開発用ハーネス</div>
+      <div id="ui"></div>
+      <div id="sr-status" class="sr-only" role="status" aria-live="polite"></div>
+    </div>
+    <script type="module" src="/src/dev/cardHarness.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>render harness</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ffe9dd;
+        font-family: 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+      }
+      #scene {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      #panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 46%;
+        background: rgba(255, 253, 247, 0.92);
+        border-left: 3px solid #f2493f;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.18);
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #3d4572;
+        font-size: 20px;
+      }
+      #panel.open {
+        transform: translateX(0);
+      }
+      #bar {
+        position: fixed;
+        left: 8px;
+        top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        max-width: 54%;
+        padding: 6px;
+        background: rgba(255, 255, 255, 0.82);
+        border-radius: 10px;
+        font-size: 12px;
+      }
+      #bar button {
+        font: inherit;
+        padding: 3px 8px;
+        border: 1px solid #b6a880;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+      }
+      #bar span {
+        align-self: center;
+        color: #3d4572;
+      }
+      #stat {
+        position: fixed;
+        left: 8px;
+        bottom: 8px;
+        padding: 3px 8px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 6px;
+        font-size: 11px;
+        color: #3d4572;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+    <div id="panel">UI パネル（画面幅の約 46%）</div>
+    <div id="bar"></div>
+    <div id="stat"></div>
+    <script type="module" src="/src/dev/renderHarness.ts"></script>
+  </body>
+</html>

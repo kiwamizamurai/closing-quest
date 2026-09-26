@@ -1,0 +1,81 @@
+/*
+ * デザイントークン。UI はこの変数だけで色・余白・角丸を決める（画面ごとに色を直書きしない）。
+ * 世界観は「経理部の机の上」。パネルは伝票のような和紙色の紙、文字は墨色、アクセントは朱。
+ * 本文のコントラストは 4.5:1 以上を保つこと。
+ */
+:root {
+  /* 紙・インク */
+  --paper: #fbf7ee;
+  --paper-2: #f3ecda;
+  --paper-3: #e9dfc6;
+  --ink: #1f2430;
+  --ink-2: #4a5163; /* 補助テキスト。paper 上で 7:1 程度 */
+  --line: #d3c8ad;
+  --line-strong: #b6a880;
+
+  /* 盤面まわりの暗い UI（HUD など） */
+  --night: #171a21;
+  --night-2: #232733;
+  --night-ink: #f0f2f7;
+  --night-ink-2: #b9bfce;
+
+  /* アクセント */
+  --accent: #b8262f; /* 朱。ボタン・強調 */
+  --accent-ink: #ffffff;
+  --gold: #a87a1f;
+  --ok: #1f7a46;
+  --ok-bg: #e1f2e7;
+  --ng: #b3261e;
+  --ng-bg: #fbe4e1;
+  --warn: #8a5a00;
+  --warn-bg: #fdf0d2;
+  --focus: #1a5fd0;
+
+  /* カード種別の色（ラベル・盤面のマスと共通） */
+  --kind-journal: #2b5fb4;
+  --kind-deadline: #b8262f;
+  --kind-calc: #6b3fa0;
+  --kind-audit: #9a5a10;
+  --kind-decision: #23724a;
+  --kind-report: #0b6f7a;
+  --kind-chance: #7a4f26;
+
+  /* 寸法 */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --gap: 12px;
+  --pad: 16px;
+  --hud-h: 56px;
+  --panel-w: min(600px, 46vw);
+  --shadow-panel: 0 8px 28px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+
+  /* 文字 */
+  --fs-base: 16px;
+  --fs-sm: 14px;
+  --fs-lg: 18px;
+  --fs-xl: 24px;
+  --fs-num: 17px;
+  font-size: var(--fs-base);
+}
+
+/* キーボード操作の焦点は必ず見えるようにする */
+:where(button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* 数字は桁をそろえる */
+.num {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

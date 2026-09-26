@@ -1,0 +1,56 @@
+# main への push で、型検査 → シナリオの整合性チェック → docs/ へビルド → docs/ をコミットして push する。
+# GitHub Pages は Settings → Pages → Source を「Deploy from a branch」、Branch を「main」/ Folder を「/docs」にすると、
+# この docs/ をそのまま配信する（Pages を有効にするのは後でよい。ビルドだけ先に回しておける）。
+name: build-docs
+
+on:
+  push:
+    branches: [main]
+    # docs/ の更新と文書だけの変更では回さない（自分が docs/ をコミットしても再実行されない）
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write # docs/ をコミットして push するため
+
+concurrency:
+  group: build-docs
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 依存をインストール
+        run: npm ci
+
+      - name: 型検査
+        run: npm run typecheck
+
+      - name: シナリオの整合性チェック（全問正解で 1 年を通す）
+        run: npm run validate
+
+      - name: docs/ にビルド
+        run: npm run build:docs
+
+      - name: docs/ をコミットして push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          if git diff --cached --quiet; then
+            echo "docs/ に変更はありません"
+          else
+            git commit -m "chore: build docs [skip ci]"
+            git push
+          fi

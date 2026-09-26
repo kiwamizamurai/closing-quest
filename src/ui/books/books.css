@@ -1,0 +1,611 @@
+/*
+ * 帳簿ドロワー。左側に紙色のパネル。ドロワー以外は pointer-events:none にして 3D とカード操作を邪魔しない。
+ * 色・余白・角丸は tokens.css の変数だけを使う。
+ */
+.cq-books {
+  /* shell.css と同じ式。開いている間、shell 側は中央の要素をこの分だけ右へ寄せる */
+  --books-w: min(560px, 46vw);
+  --cq-serif: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  color: var(--ink);
+  font-size: var(--fs-base);
+  line-height: 1.55;
+}
+.cq-books [hidden] {
+  display: none !important;
+}
+.cq-books button,
+.cq-books select {
+  font: inherit;
+}
+
+.cq-books__drawer {
+  position: absolute;
+  top: var(--hud-h);
+  left: 0;
+  bottom: 0;
+  width: var(--books-w);
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+  background: var(--paper);
+  border-right: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-panel);
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-104%);
+  transition:
+    transform 0.24s ease,
+    visibility 0s linear 0.24s;
+}
+.cq-books.is-open .cq-books__drawer {
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition:
+    transform 0.24s ease,
+    visibility 0s;
+}
+
+/* ---- ヘッダー・タブ ---- */
+.cq-books__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px 8px 16px;
+  background: var(--paper-2);
+  border-top: 5px solid var(--accent);
+  border-bottom: 1px solid var(--line-strong);
+}
+.cq-books__title {
+  margin: 0;
+  font-family: var(--cq-serif);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.2;
+}
+.cq-books__lead {
+  flex: 1;
+  margin: 0;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+.cq-books__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.cq-books__close:hover {
+  background: var(--paper-3);
+}
+.cq-books .cq-kbd {
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 0 6px;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.cq-books__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px 0;
+  overflow-x: auto;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line-strong);
+}
+.cq-books__tab {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-top: 3px solid transparent;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  color: var(--ink-2);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cq-books__tab:hover {
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  color: var(--ink);
+}
+.cq-books__tab[aria-selected='true'] {
+  margin-bottom: -1px;
+  border-color: var(--line-strong);
+  border-top-color: var(--accent);
+  background: var(--paper);
+  color: var(--ink);
+}
+@container (max-width: 520px) {
+  .cq-books__tabs {
+    padding-left: 4px;
+    padding-right: 4px;
+    gap: 0;
+  }
+  .cq-books__tab {
+    padding: 0 8px;
+    font-size: 15px;
+  }
+  .cq-books__lead {
+    display: none;
+  }
+}
+
+.cq-books__panels {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cq-books__panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ---- タブ共通 ---- */
+/* 上の余白は先頭要素の padding で取る（スクロール領域自体に padding-top があると、sticky の見出しがその分だけ下にずれる） */
+.cq-tab {
+  padding: 0 16px 24px;
+}
+.cq-tab > :first-child {
+  padding-top: 14px;
+}
+.cq-tab--fill {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+.cq-tab__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin-bottom: 8px;
+}
+.cq-tab__title {
+  margin: 0;
+  font-family: var(--cq-serif);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.cq-tab__asof {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+.cq-tab__caption {
+  margin: 0 0 8px;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+.cq-note {
+  margin: 10px 0 0;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.cq-empty {
+  padding: 28px 0;
+  color: var(--ink-2);
+  text-align: center;
+}
+.cq-books .is-neg {
+  color: var(--ng);
+}
+
+.cq-badge {
+  display: flex;
+  width: fit-content;
+  margin: 14px 0 0;
+  padding: 6px 16px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.cq-badge.is-ok {
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.cq-badge.is-ng {
+  background: var(--ng-bg);
+  color: var(--ng);
+}
+
+/* ---- 表 ---- */
+.cq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.cq-table th,
+.cq-table td {
+  padding: 6px 10px;
+  border-bottom: 1px dotted var(--line-strong);
+  text-align: left;
+  vertical-align: baseline;
+}
+.cq-table .num {
+  text-align: right;
+  white-space: nowrap;
+}
+.cq-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--line-strong);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cq-table tbody th[scope='row'] {
+  font-weight: 500;
+}
+.cq-group th {
+  padding: 8px 10px 4px;
+  border-bottom: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--paper-2) 55%, var(--paper));
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+}
+.cq-trial tfoot th,
+.cq-trial tfoot td {
+  border-top: 2px solid var(--ink);
+  border-bottom: 3px double var(--ink);
+  background: var(--paper-2);
+  font-weight: 700;
+}
+
+/* 損益計算書 */
+.cq-fs {
+  margin-top: 4px;
+}
+.cq-fs th:nth-child(1) {
+  width: auto;
+}
+.cq-fs th:nth-child(2),
+.cq-fs th:nth-child(3),
+.cq-fs td:nth-child(2),
+.cq-fs td:nth-child(3) {
+  width: 116px;
+}
+.cq-fs__head th,
+.cq-fs__head td {
+  font-weight: 700;
+}
+.cq-fs__detail th {
+  padding-left: 28px;
+  color: var(--ink);
+}
+.cq-fs__sub th,
+.cq-fs__sub td {
+  border-top: 1px solid var(--ink-2);
+  background: color-mix(in srgb, var(--paper-2) 60%, var(--paper));
+  font-weight: 700;
+}
+.cq-fs__total th,
+.cq-fs__total td {
+  border-top: 1px solid var(--ink);
+  border-bottom: 3px double var(--ink);
+  background: var(--paper-2);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+.cq-fs__note td {
+  padding: 2px 10px 8px;
+}
+.cq-budget {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+  margin: 0;
+  padding: 4px 10px;
+  border-left: 4px solid var(--gold);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+.cq-budget strong.is-ok {
+  color: var(--ok);
+}
+.cq-budget strong.is-ng {
+  color: var(--ng);
+}
+
+/* 期間切替 */
+.cq-seg {
+  display: inline-flex;
+  margin-left: auto;
+  border: 2px solid var(--ink-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.cq-seg__btn {
+  min-width: 68px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.cq-seg__btn[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cq-seg__btn:not([aria-checked='true']):hover {
+  background: var(--paper-3);
+}
+.cq-seg__btn:focus-visible {
+  outline-offset: -4px;
+}
+
+/* 貸借対照表 */
+.cq-bs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+@container (max-width: 400px) {
+  .cq-bs {
+    grid-template-columns: 1fr;
+  }
+}
+.cq-bs__col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+}
+.cq-bs__title {
+  margin: 0;
+  padding: 6px 12px;
+  background: var(--paper-3);
+  border-bottom: 1px solid var(--line-strong);
+  font-size: var(--fs-base);
+  letter-spacing: 0.15em;
+  text-align: center;
+}
+.cq-bs__sec {
+  padding: 8px 12px 6px;
+}
+.cq-bs__heading {
+  margin: 0 0 2px;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.25em;
+}
+.cq-bs__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cq-bs__line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--line-strong);
+}
+.cq-bs__line .num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.cq-bs__line.is-contra {
+  padding-left: 14px;
+}
+.cq-bs__tag {
+  display: inline-block;
+  margin-left: 6px;
+  white-space: nowrap;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--warn-bg);
+  color: var(--warn);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+.cq-bs__sub {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0 0;
+  padding: 5px 0 0;
+  border-top: 1px solid var(--ink-2);
+  font-weight: 700;
+}
+.cq-bs__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 8px 12px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 3px double var(--ink);
+  background: var(--paper-2);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+/* 狭いドロワーでは、科目名が折り返さないよう文字をひとまわり小さくする */
+@container (max-width: 520px) {
+  .cq-bs__line,
+  .cq-bs__sub {
+    font-size: 15px;
+  }
+  .cq-bs__total {
+    font-size: var(--fs-base);
+  }
+}
+.cq-bs__total .num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 総勘定元帳 */
+.cq-ledger__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+.cq-ledger__label {
+  font-weight: 700;
+}
+.cq-select {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+.cq-ledger__summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+  flex: none;
+  margin: 8px 0 6px;
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+}
+.cq-ledger__summary strong {
+  color: var(--ink);
+  font-size: var(--fs-base);
+}
+.cq-ledger__scroll {
+  flex: 1;
+  min-height: 0;
+  margin: 0 -16px;
+  padding: 0 16px 20px;
+  overflow: auto;
+  border-top: 1px solid var(--line-strong);
+}
+.cq-ledger th,
+.cq-ledger td {
+  padding: 6px 8px;
+}
+.cq-ledger__date {
+  width: 52px;
+  white-space: nowrap;
+}
+.cq-ledger__memo {
+  overflow-wrap: anywhere;
+}
+.cq-ledger .is-open td {
+  color: var(--ink-2);
+}
+.cq-ledger .num {
+  min-width: 72px;
+}
+/* 狭いドロワーでは、摘要の幅を確保するため数字の列を詰める */
+@container (max-width: 520px) {
+  .cq-ledger th,
+  .cq-ledger td {
+    padding: 6px 4px;
+    font-size: 15px;
+  }
+  .cq-ledger .num {
+    min-width: 0;
+  }
+  .cq-ledger__date {
+    width: 44px;
+  }
+}
+
+/* 勘定科目表 */
+.cq-chart__sec {
+  margin-top: 16px;
+}
+.cq-chart__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin: 0;
+  padding: 4px 10px;
+  border-left: 5px solid var(--accent);
+  background: var(--paper-2);
+  font-size: var(--fs-lg);
+}
+.cq-chart__heading small {
+  color: var(--ink-2);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+}
+.cq-chart__list {
+  margin: 0;
+}
+.cq-chart__item {
+  padding: 8px 10px;
+  border-bottom: 1px dotted var(--line-strong);
+}
+.cq-chart__item dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.cq-chart__name {
+  font-weight: 700;
+}
+.cq-chart__item dd {
+  margin: 2px 0 0;
+  color: var(--ink-2);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+}
+.cq-chip {
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.cq-chip--debit {
+  background: var(--paper-3);
+  color: var(--ink);
+}
+.cq-chip--credit {
+  background: var(--ink);
+  color: var(--paper);
+}
+.cq-chip--contra {
+  background: var(--warn-bg);
+  color: var(--warn);
+}
